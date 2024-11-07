@@ -68,7 +68,7 @@ class MastermindSpill:
             fg="black",  # Hvit tekstfarge
             activebackground="white",  # Mørk blå bakgrunn når knappen trykkes
             activeforeground="black",  # Hvit tekst når knappen trykkes
-            width=12,  # Økt bredde
+            width=10,  # Økt bredde
             height=2,  # Økt høyde
             relief="raised",  # Tredimensjonal effekt
             borderwidth=2  # Tykkere kant
