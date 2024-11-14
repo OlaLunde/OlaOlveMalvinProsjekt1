@@ -45,6 +45,7 @@ class Mastermindgame:
         self.coloursbuttons_frame.pack()
 
         # Opprett fargeknappene
+        # Problemet ligger i denne delen
         for colour in COLOURS:
             button = tk.Button(self.coloursbuttons_frame, bg=colour, width=5, height=2, relief="solid", borderwidth=1,
                               command=lambda f=colour: self.add_colour(f))
@@ -63,23 +64,23 @@ class Mastermindgame:
             self.control_frame,
             text="Sjekk Gjetning",
             command=self.check_guess,
-            font=("Helvetica", 12, "bold"),  # Større og fet tekst
-            bg="light gray",  # Blå bakgrunnsfarge
-            fg="black",  # Hvit tekstfarge
-            activebackground="white",  # Mørk blå bakgrunn når knappen trykkes
-            activeforeground="black",  # Hvit tekst når knappen trykkes
-            width=10,  # Økt bredde
-            height=2,  # Økt høyde
+            font=("Helvetica", 12, "bold"), 
+            bg="light gray", 
+            fg="black",  
+            activebackground="white",  
+            activeforeground="black",  
+            width=10,  
+            height=2,  
             relief="raised",  # Tredimensjonal effekt
-            borderwidth=2  # Tykkere kant
+            borderwidth=2  
         )
         self.check_button.pack(side=tk.LEFT, padx=5, pady=1)  # Ekstra avstand rundt knappen
 
         # Tilbakemelding med styling
         self.result_label = tk.Label(
             root,
-            text="",  # Start med tom tekst
-            font=("Helvetica", 12, "bold"),  # Fet tekst
+            text="",  
+            font=("Helvetica", 12, "bold"),  
             fg="red",  # Rød tekstfarge
             
         )
