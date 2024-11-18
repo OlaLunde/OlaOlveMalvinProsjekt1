@@ -56,7 +56,7 @@ class Mastermindgame:
         # Opprett fargeknappene
         # Problemet ligger i denne delen
         for colour in COLOURS:
-            if platform.system == "Darwin":
+            if platform.system() == "Darwin":
                 button = MacButton(self.coloursbuttons_frame, bg=colour, relief="solid", borderwidth=1,
                               command=lambda f=colour: self.add_colour(f))
             else:
