@@ -55,7 +55,7 @@ class Mastermindgame:
         # Opprett fargeknappene
         # Problemet ligger i denne delen
         for colour in COLOURS:
-            if True:
+            if "Darwin":
                 button = MacButton(self.coloursbuttons_frame, bg=colour, relief="solid", borderwidth=1,
                               command=lambda f=colour: self.add_colour(f))
             else:
@@ -102,10 +102,16 @@ class Mastermindgame:
             self.guess.append(colour)
             # Opprett en knapp for den valgte fargen
             # Definer `farge_knapp` før vi bruker den i lambda-funksjonen
-            colour_button = MacButton(self.chosen_colour_frame, bg=colour)
-            colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
-            colour_button.pack(side=tk.LEFT, padx=5)
-            self.chosen_colour_button.append(colour_button)
+            if "Darwin":
+                colour_button = MacButton(self.chosen_colour_frame, bg=colour)
+                colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
+                colour_button.pack(side=tk.LEFT, padx=5)
+                self.chosen_colour_button.append(colour_button)
+            else:
+                colour_button = tk.Button(self.chosen_colour_frame, bg=colour)
+                colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
+                colour_button.pack(side=tk.LEFT, padx=5)
+                self.chosen_colour_button.append(colour_button)
 
     def remove_colour(self, button, colour):
         # Fjern valgt farge både fra GUI og fra gjett-listen
