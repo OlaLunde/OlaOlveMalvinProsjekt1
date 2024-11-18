@@ -2,7 +2,13 @@ import tkinter as tk
 import random
 import platform
 
+isMac = False
+
+
 if platform.system() == "Darwin":
+    isMac = True
+
+if isMac:
     try:
         from tkmacosx import Button as MacButton
     except ImportError as e:
@@ -56,7 +62,7 @@ class Mastermindgame:
         # Opprett fargeknappene
         # Problemet ligger i denne delen
         for colour in COLOURS:
-            if platform.system() == "Darwin":
+            if isMac:
                 button = MacButton(self.coloursbuttons_frame, bg=colour, relief="solid", borderwidth=1,
                               command=lambda f=colour: self.add_colour(f))
             else:
@@ -72,6 +78,12 @@ class Mastermindgame:
         self.control_frame = tk.Frame(root)
         self.control_frame.pack()
 
+        if isMac:
+            width = 40
+        else:
+            width = 20
+
+
         # Sjekk-knapp med styling
         self.check_button = tk.Button(
             self.control_frame,
@@ -80,6 +92,7 @@ class Mastermindgame:
             font=("Helvetica", 12, "bold"), 
             bg="light gray", 
             fg="black",  
+            width=width,
             activebackground="white",  
             activeforeground="black",  
             relief="raised",  # Tredimensjonal effekt
@@ -100,8 +113,10 @@ class Mastermindgame:
     def add_colour(self, colour):
         if len(self.guess) < 4:
             self.guess.append(colour)
-            if platform.system() == "Darwin":
-                colour_button = MacButton(self.chosen_colour_frame, bg=colour, relief="solid", borderwidth=1)
+            # Opprett en knapp for den valgte fargen
+            # Definer `farge_knapp` før vi bruker den i lambda-funksjonen
+            if isMac:
+                colour_button = MacButton(self.chosen_colour_frame, bg=colour)
                 colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
             else:
                 colour_button = tk.Button(self.chosen_colour_frame, bg=colour, relief="solid", borderwidth=1)
