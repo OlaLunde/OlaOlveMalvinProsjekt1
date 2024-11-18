@@ -7,6 +7,7 @@ if platform.system() == "Darwin":
         from tkmacosx import Button as MacButton
     except ImportError as e:
         print("Her er noe feil", e)
+        print("MacOS brukere må installere følgende i konsollen: pip install tkmacosx")
         exit()
 
 # Tilgjengelige farger for spillet
