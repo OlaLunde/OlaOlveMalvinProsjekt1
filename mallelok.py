@@ -12,7 +12,7 @@ antall_forsøk = 10
 
 # API-opplysninger for highscore
 URL = "https://rasmusweb.no/hs.php"
-GameID = "game3"
+GameID = "Indunu-nomama-wakho"
 
 # Funksjoner for highscore-håndtering
 def getHS():
