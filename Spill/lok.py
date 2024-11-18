@@ -63,12 +63,27 @@ class Mastermindgame:
         # Problemet ligger i denne delen
         for colour in COLOURS:
             if isMac:
-                button = MacButton(self.coloursbuttons_frame, bg=colour, relief="solid", borderwidth=1,
-                              command=lambda f=colour: self.add_colour(f))
+                button = MacButton(
+                    self.coloursbuttons_frame,
+                    bg=colour,
+                    relief="solid",
+                    borderwidth=1,
+                    width=50,  # bredde i piksler
+                    height=50,  # Høyde i piksler
+                    command=lambda f=colour: self.add_colour(f)
+                )
             else:
-                button = tk.Button(self.coloursbuttons_frame, bg=colour, width=5, height=2, relief="solid", borderwidth=1,
-                              command=lambda f=colour: self.add_colour(f))
-            button.pack(side=tk.LEFT, padx=5)
+                button = tk.Button(
+                    self.coloursbuttons_frame,
+                    bg=colour,
+                    relief="solid",
+                    borderwidth=1,
+                    width=3,  # Bredde i tegn (justert for Windows)
+                    height=1  # Høyde i tegn
+                )
+                
+                button.config(width=5, height=2)
+            button.pack(side=tk.LEFT, padx=8, pady=8)
 
         # Ramme for valgte farger
         self.chosen_colour_frame = tk.Frame(root)
