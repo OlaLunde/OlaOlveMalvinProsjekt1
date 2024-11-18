@@ -2,10 +2,12 @@ import tkinter as tk
 import random
 import platform
 
-try:
-    from tkmacosx import button as MacButton
-except ImportError:
-    MacButton = None
+if platform.system() == "Darwin":
+    try:
+        from tkmacosx import Button as MacButton
+    except ImportError as e:
+        print("Her er noe feil", e)
+        exit()
 
 # Tilgjengelige farger for spillet
 COLOURS = ["red", "blue", "green", "yellow", "orange", "purple"]
@@ -53,7 +55,11 @@ class Mastermindgame:
         # Opprett fargeknappene
         # Problemet ligger i denne delen
         for colour in COLOURS:
-            button = tk.Button(self.coloursbuttons_frame, bg=colour, width=5, height=2, relief="solid", borderwidth=1,
+            if True:
+                button = MacButton(self.coloursbuttons_frame, bg=colour, relief="solid", borderwidth=1,
+                              command=lambda f=colour: self.add_colour(f))
+            else:
+                button = tk.Button(self.coloursbuttons_frame, bg=colour, width=5, height=2, relief="solid", borderwidth=1,
                               command=lambda f=colour: self.add_colour(f))
             button.pack(side=tk.LEFT, padx=5)
 
@@ -75,8 +81,6 @@ class Mastermindgame:
             fg="black",  
             activebackground="white",  
             activeforeground="black",  
-            width=10,  
-            height=2,  
             relief="raised",  # Tredimensjonal effekt
             borderwidth=2  
         )
@@ -98,7 +102,7 @@ class Mastermindgame:
             self.guess.append(colour)
             # Opprett en knapp for den valgte fargen
             # Definer `farge_knapp` før vi bruker den i lambda-funksjonen
-            colour_button = tk.Button(self.chosen_colour_frame, bg=colour, width=5, height=2)
+            colour_button = MacButton(self.chosen_colour_frame, bg=colour)
             colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
             colour_button.pack(side=tk.LEFT, padx=5)
             self.chosen_colour_button.append(colour_button)
