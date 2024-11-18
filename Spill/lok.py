@@ -111,7 +111,6 @@ class Mastermindgame:
         self.result_label.pack(pady=10)  # Avstand rundt etiketten
 
     def add_colour(self, colour):
-        # Legg til farge hvis det er plass i gjettningen
         if len(self.guess) < 4:
             self.guess.append(colour)
             # Opprett en knapp for den valgte fargen
@@ -119,16 +118,15 @@ class Mastermindgame:
             if isMac:
                 colour_button = MacButton(self.chosen_colour_frame, bg=colour)
                 colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
-                colour_button.pack(side=tk.LEFT, padx=5)
-                self.chosen_colour_button.append(colour_button)
             else:
-                colour_button = tk.Button(self.chosen_colour_frame, bg=colour)
+                colour_button = tk.Button(self.chosen_colour_frame, bg=colour, relief="solid", borderwidth=1)
                 colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
-                colour_button.pack(side=tk.LEFT, padx=5)
-                self.chosen_colour_button.append(colour_button)
+            
+            colour_button.config(width=50, height=50)  
+            colour_button.pack(side=tk.LEFT, padx=5)  
+            self.chosen_colour_button.append(colour_button)
 
     def remove_colour(self, button, colour):
-        # Fjern valgt farge både fra GUI og fra gjett-listen
         button.destroy()
         self.guess.remove(colour)
 
