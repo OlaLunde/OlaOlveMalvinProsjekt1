@@ -1,5 +1,20 @@
 import tkinter as tk
 import random
+import platform
+
+isMac = False
+
+
+if platform.system() == "Darwin":
+    isMac = True
+
+if isMac:
+    try:
+        from tkmacosx import Button as MacButton
+    except ImportError as e:
+        print("Her er noe feil", e)
+        print("MacOS brukere må installere følgende i konsollen: pip install tkmacosx")
+        exit()
 
 # Tilgjengelige farger for spillet
 COLOURS = ["red", "blue", "green", "yellow", "orange", "purple"]
@@ -47,9 +62,23 @@ class Mastermindgame:
         # Opprett fargeknappene
         # Problemet ligger i denne delen
         for colour in COLOURS:
-            button = tk.Button(self.coloursbuttons_frame, bg=colour, width=5, height=2, relief="solid", borderwidth=1,
-                              command=lambda f=colour: self.add_colour(f))
-            button.pack(side=tk.LEFT, padx=5)
+            if isMac:
+                button_class = MacButton
+                width, height = 50, 50
+            else:
+                button_class = tk.Button
+                width, height = 5, 2
+
+            button = button_class(
+                self.coloursbuttons_frame,
+                bg=colour,
+                relief="solid",
+                borderwidth=1,
+                width=width,
+                height=height,
+                command=lambda f=colour: self.add_colour(f)
+            )
+            button.pack(side=tk.LEFT, padx=8, pady=8)
 
         # Ramme for valgte farger
         self.chosen_colour_frame = tk.Frame(root)
@@ -59,6 +88,12 @@ class Mastermindgame:
         self.control_frame = tk.Frame(root)
         self.control_frame.pack()
 
+        if isMac:
+            width = 40
+        else:
+            width = 10
+
+
         # Sjekk-knapp med styling
         self.check_button = tk.Button(
             self.control_frame,
@@ -67,10 +102,9 @@ class Mastermindgame:
             font=("Helvetica", 12, "bold"), 
             bg="light gray", 
             fg="black",  
+            width=width,
             activebackground="white",  
             activeforeground="black",  
-            width=10,  
-            height=2,  
             relief="raised",  # Tredimensjonal effekt
             borderwidth=2  
         )
@@ -87,20 +121,38 @@ class Mastermindgame:
         self.result_label.pack(pady=10)  # Avstand rundt etiketten
 
     def add_colour(self, colour):
-        # Legg til farge hvis det er plass i gjettningen
         if len(self.guess) < 4:
             self.guess.append(colour)
+            
+            # Velg riktig knappetype og størrelse
+            if isMac:
+                button_class = MacButton
+                width, height = 50, 50
+            else:
+                button_class = tk.Button
+                width, height = 5, 2
+
             # Opprett en knapp for den valgte fargen
-            # Definer `farge_knapp` før vi bruker den i lambda-funksjonen
-            colour_button = tk.Button(self.chosen_colour_frame, bg=colour, width=5, height=2)
-            colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
+            colour_button = button_class(
+                self.chosen_colour_frame,
+                bg=colour,
+                relief="solid",
+                borderwidth=1
+            )
+            colour_button.config(
+                width=width,
+                height=height,
+                command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f)
+            )
             colour_button.pack(side=tk.LEFT, padx=5)
             self.chosen_colour_button.append(colour_button)
 
     def remove_colour(self, button, colour):
-        # Fjern valgt farge både fra GUI og fra gjett-listen
+        # Fjern knappen fra GUI
         button.destroy()
-        self.guess.remove(colour)
+        # Fjern fargen fra gjetningslisten
+        if colour in self.guess:
+            self.guess.remove(colour)
 
     def check_guess(self):
         if len(self.guess) != 4:
