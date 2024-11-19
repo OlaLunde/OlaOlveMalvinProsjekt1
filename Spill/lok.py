@@ -60,7 +60,6 @@ class Mastermindgame:
         self.coloursbuttons_frame.pack()
 
         # Opprett fargeknappene
-        # Problemet ligger i denne delen
         for colour in COLOURS:
             if isMac:
                 button = MacButton(
