@@ -91,7 +91,7 @@ class Mastermindgame:
         if isMac:
             width = 40
         else:
-            width = 5
+            width = 10
 
 
         # Sjekk-knapp med styling
