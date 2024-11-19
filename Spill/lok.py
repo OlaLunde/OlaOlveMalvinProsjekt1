@@ -60,30 +60,14 @@ class Mastermindgame:
         self.coloursbuttons_frame.pack()
 
         # Opprett fargeknappene
-        # Problemet ligger i denne delen
         for colour in COLOURS:
             if isMac:
-                button = MacButton(
-                    self.coloursbuttons_frame,
-                    bg=colour,
-                    relief="solid",
-                    borderwidth=1,
-                    width=50,  # bredde i piksler
-                    height=50,  # Høyde i piksler
-                    command=lambda f=colour: self.add_colour(f)
-                )
+                button = MacButton(self.coloursbuttons_frame, bg=colour, relief="solid", borderwidth=1,
+                              command=lambda f=colour: self.add_colour(f))
             else:
-                button = tk.Button(
-                    self.coloursbuttons_frame,
-                    bg=colour,
-                    relief="solid",
-                    borderwidth=1,
-                    width=3,  # Bredde i tegn (justert for Windows)
-                    height=1  # Høyde i tegn
-                )
-                
-                button.config(width=5, height=2)
-            button.pack(side=tk.LEFT, padx=8, pady=8)
+                button = tk.Button(self.coloursbuttons_frame, bg=colour, width=5, height=2, relief="solid", borderwidth=1,
+                              command=lambda f=colour: self.add_colour(f))
+            button.pack(side=tk.LEFT, padx=5)
 
         # Ramme for valgte farger
         self.chosen_colour_frame = tk.Frame(root)
@@ -96,7 +80,7 @@ class Mastermindgame:
         if isMac:
             width = 40
         else:
-            width = 5
+            width = 20
 
 
         # Sjekk-knapp med styling
@@ -126,6 +110,7 @@ class Mastermindgame:
         self.result_label.pack(pady=10)  # Avstand rundt etiketten
 
     def add_colour(self, colour):
+        # Legg til farge hvis det er plass i gjettningen
         if len(self.guess) < 4:
             self.guess.append(colour)
             # Opprett en knapp for den valgte fargen
@@ -133,15 +118,16 @@ class Mastermindgame:
             if isMac:
                 colour_button = MacButton(self.chosen_colour_frame, bg=colour)
                 colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
+                colour_button.pack(side=tk.LEFT, padx=5)
+                self.chosen_colour_button.append(colour_button)
             else:
-                colour_button = tk.Button(self.chosen_colour_frame, bg=colour, relief="solid", borderwidth=1)
+                colour_button = tk.Button(self.chosen_colour_frame, bg=colour)
                 colour_button.config(command=lambda fb=colour_button, f=colour: self.remove_colour(fb, f))
-            
-            colour_button.config(width=50, height=50)  
-            colour_button.pack(side=tk.LEFT, padx=5)  
-            self.chosen_colour_button.append(colour_button)
+                colour_button.pack(side=tk.LEFT, padx=5)
+                self.chosen_colour_button.append(colour_button)
 
     def remove_colour(self, button, colour):
+        # Fjern valgt farge både fra GUI og fra gjett-listen
         button.destroy()
         self.guess.remove(colour)
 
