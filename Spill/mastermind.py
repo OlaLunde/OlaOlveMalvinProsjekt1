@@ -120,6 +120,22 @@ class Mastermindgame:
         )
         self.result_label.pack(pady=10)  # Avstand rundt etiketten
 
+        self.play_again_button = tk.Button(
+        self.control_frame,
+        text="Spill Igjen",
+        command=self.reset_game,
+        font=("Helvetica", 12, "bold"),
+        bg="light gray",
+        fg="black",
+        width=20,
+        activebackground="white",
+        activeforeground="black",
+        relief="raised",
+        borderwidth=2
+        )
+        self.play_again_button.pack(side=tk.LEFT, padx=5, pady=1)
+
+
     def add_colour(self, colour):
         if len(self.guess) < 4:
             self.guess.append(colour)
@@ -229,6 +245,30 @@ class Mastermindgame:
     # Legg til en horisontal strek for å skille hver gjetning
         separator = tk.Frame(self.hist_list, height=1, bd=1, relief="sunken", bg="black")
         separator.pack(fill=tk.X, pady=3)
+    def reset_game(self):
+        global secret_code
+        # Generer en ny hemmelig kode
+        secret_code = [random.choice(COLOURS) for _ in range(4)]
+
+        # Nullstill variabler
+        self.guess_count = 0
+        self.guess = []
+
+        # Fjern alle valgte fargeknapper
+        for button in self.chosen_colour_button:
+            button.destroy()
+        self.chosen_colour_button.clear()
+
+        # Fjern all historikk
+        for widget in self.hist_list.winfo_children():
+            widget.destroy()
+
+        # Nullstill resultatetiketten
+        self.result_label.config(text="")
+
+        # Aktiver "Sjekk Gjetning"-knappen
+        self.check_button.config(state=tk.NORMAL)
+
 
 
 # Start spillet
