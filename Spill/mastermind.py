@@ -234,7 +234,7 @@ class Mastermindgame:
         )
         correct_placement_label.pack()
 
-    # strek mellom gjetningene
+    # lager en strek mellom gjetningene
         separator = tk.Frame(self.hist_list, height=1, bd=1, relief="sunken", bg="black")
         separator.pack(fill=tk.X, pady=3)
         
@@ -249,11 +249,10 @@ class Mastermindgame:
             button.destroy()
         self.chosen_colour_button.clear()
 
-        # fjerner alle "widgets" fra historikken
+        # fjerner alle widgets fra historikken
         for widget in self.hist_list.winfo_children():
             widget.destroy()
 
-        # fjerner resultat
         self.result_label.config(text="")
 
         # reaktiverer sjekk gjetning knapp
