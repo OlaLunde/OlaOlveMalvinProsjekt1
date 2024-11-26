@@ -85,13 +85,15 @@ class Mastermindgame:
         self.control_frame.pack()
 
         if isMac:
-            width = 40
+            check_button_class = MacButton
+            width = 100
         else:
+            check_button_class = tk.Button
             width = 15
 
 
         # Knappen som sjekker gjetningen
-        self.check_button = tk.Button(
+        self.check_button = check_button_class(
             self.control_frame,
             text="Sjekk Gjetning",
             command=self.check_guess,
@@ -117,14 +119,22 @@ class Mastermindgame:
         self.result_label.pack(pady=10)
 
         # spill igjen knapp
-        self.play_again_button = tk.Button(
+
+        if isMac:
+            play_again_button_class = MacButton
+            width = 120
+        else:
+            play_again_button_class = tk.Button
+            width = 20
+        
+        self.play_again_button = play_again_button_class(
         self.control_frame,
         text="Spill Igjen",
         command=self.reset_game,
         font=("Helvetica", 12, "bold"),
         bg="light gray",
         fg="black",
-        width=20,
+        width=width,
         activebackground="white",
         activeforeground="black",
         relief="raised",
