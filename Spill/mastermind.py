@@ -190,6 +190,7 @@ class Mastermindgame:
         if correct_placement == 4:
             self.result_label.config(text="Gratulerer! Du gjettet koden riktig!")
             self.check_button.config(state=tk.DISABLED)
+
         else:
             self.guess_count += 1
             if self.guess_count >= number_attempts:
@@ -197,6 +198,7 @@ class Mastermindgame:
                     text=f"Beklager, du har brukt opp alle forsøkene. Koden var: {secret_code}"
                 )
                 self.check_button.config(state=tk.DISABLED)
+
             else:
                 # Nullstill for ny gjetning
                 self.guess = []

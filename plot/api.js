@@ -26,9 +26,24 @@ async function getRequest() {
 }
 
 // Poster et svar til php backend
-async function postRequest(svar) {
+async function postRequest(svar, guessCount) {
     const htmlObj = document.getElementById("post")
     htmlObj.innerHTML = "Waiting for response"
+
+        // Antall forsøk som skal sendes
+        let attempts = {
+            "f1": 0, // Antall spillere som har brukt 1 forsøk osv osv
+            "f2": 0, 
+            "f3": 0,
+            "f4": 0,
+            "f5": 0,
+            "f6": 0,
+            "f7": 0,
+            "f8": 0,
+            "f9": 0,
+            "f10": 0, 
+        };
+    
 
     postBody = {}
     postBody.id = spmID
