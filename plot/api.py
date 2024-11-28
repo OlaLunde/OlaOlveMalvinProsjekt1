@@ -16,5 +16,5 @@ def postResult(result):
     print(resultat.json())
 
 
-postResult(guess_count)
+postResult()
 getResults()
