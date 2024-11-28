@@ -3,7 +3,6 @@ import random
 import platform
 
 isMac = False
-#guess_count = 0
 
 
 if platform.system() == "Darwin":
