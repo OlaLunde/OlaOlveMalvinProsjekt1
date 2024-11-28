@@ -27,7 +27,7 @@ class Mastermindgame:
         self.root = root
         self.root.title("Mastermind")
 
-        self.guess_count = 0
+        self.guess_count
         self.guess = []
         self.chosen_colour_button = []  
         
