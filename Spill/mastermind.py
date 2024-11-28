@@ -1,6 +1,7 @@
 import tkinter as tk
 import random
 import platform
+from api import getResults
 
 isMac = False
 
@@ -27,6 +28,7 @@ class Mastermindgame:
         self.root.title("Mastermind")
 
         self.guess_count = 0
+    
         self.guess = []
         self.chosen_colour_button = []  
         

@@ -1,7 +1,11 @@
 import requests as req
+#from mastermind import Mastermindgame
 
 URL = "https://rasmusweb.no/spm.php"
 GameID = "mastermind"
+
+#game = Mastermindgame(None)
+#print(game.get_guess_count())  # Hent guess_count
 
 def getResults():
     resultat = req.get(URL + "?id=" + GameID)  # , requestOptions)
@@ -16,5 +20,5 @@ def postResult(result):
     print(resultat.json())
 
 
-postResult()
 getResults()
+postResult()
