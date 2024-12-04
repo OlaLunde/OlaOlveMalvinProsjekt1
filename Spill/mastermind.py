@@ -3,6 +3,7 @@ import random
 import platform
 from api import postResult
 import matplotlib.pyplot as plt
+from plot import plot_results 
 
 isMac = False
 
@@ -58,6 +59,33 @@ class Mastermindgame:
         # lager en ramme for fargene man kan velge i root
         self.coloursbuttons_frame = tk.Frame(root)
         self.coloursbuttons_frame.pack()
+        
+        # Ramme for de to knappene: sjekk gjetning og spill igjen
+        self.control_frame = tk.Frame(root)
+        self.control_frame.pack()
+        
+        # Knapp for å vise graf
+        if isMac:
+            show_graph_button_class = MacButton
+            width = 120
+        else:
+            show_graph_button_class = tk.Button
+            width = 20
+
+        self.show_graph_button = show_graph_button_class(
+            self.control_frame,
+            text="Vis statistikk",
+            command=plot_results,  # Kall plot-funksjonen
+            font=("Helvetica", 12, "bold"),
+            bg="light gray",
+            fg="black",
+            width=width,
+            activebackground="white",
+            activeforeground="black",
+            relief="raised",
+            borderwidth=2
+        )
+        self.show_graph_button.pack(side=tk.LEFT, padx=5, pady=1)
 
         # oppretter fargeknappene
         for colour in COLOURS:
@@ -82,10 +110,6 @@ class Mastermindgame:
         # Ramme for valgte farger
         self.chosen_colour_frame = tk.Frame(root)
         self.chosen_colour_frame.pack(pady=10)
-
-        # Ramme for de to knappene: sjekk gjetning og spill igjen
-        self.control_frame = tk.Frame(root)
-        self.control_frame.pack()
 
         if isMac:
             check_button_class = MacButton
