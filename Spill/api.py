@@ -14,4 +14,4 @@ def postResult(result):
     return resultat
 
 # Testing:
-postResult()
+# postResult()
