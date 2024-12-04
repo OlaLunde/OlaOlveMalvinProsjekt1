@@ -12,14 +12,6 @@ def plot_results():
         y_max = 20
         plt.bar(forsøk, antall, color='red')
 
-<<<<<<< HEAD
-    # Lag enkel stolpediagram
-    plt.bar(forsøk, antall, color='red')
-    plt.xlabel("Antall Forsøk")
-    plt.ylabel("Antall Spillere")
-    plt.title("Antall forsøk brukt av spillere")
-    plt.show()
-=======
         plt.ylim(y_min, y_max)
 
         # Legg til tall over søylene for bedre lesbarhet
@@ -39,4 +31,3 @@ def plot_results():
 
     except Exception as e:
         print(f"Feil i plot_results: {e}")
->>>>>>> cbb6ffb785245dd949a3aebe39c47fc83702e03c
