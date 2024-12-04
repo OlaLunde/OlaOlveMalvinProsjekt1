@@ -12,3 +12,10 @@ def postResult(result):
     data = {"id": GameID , "svar": result}
     resultat = req.post(URL, json=data)
     return resultat
+<<<<<<< HEAD
+=======
+
+
+# Testing:
+postResult(10)
+>>>>>>> cbb6ffb785245dd949a3aebe39c47fc83702e03c
