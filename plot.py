@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
+from Spill import api
 forsøk = []
 folk = []
 
-with open("api.py", encoding ="utf-8") as fil:
-    for linje in fil:
-        verdier = linje.strip().split(":")   # .strip fjærner whitespaces / linjeskift.  split(";") viser at man splitter tallene ved tegnet ;
+with open("Spill/api.py", encoding ="utf-8") as fil:
+    for data in fil:
+        verdier = data.strip().split(",")  
         forsøk.append((verdier[0]))
         folk.append(float(verdier[1])) 
 
