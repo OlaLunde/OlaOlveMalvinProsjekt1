@@ -2,33 +2,32 @@ import matplotlib.pyplot as plt
 from api import getResults
 
 def plot_results():
-    # Hent data fra API
-    results = getResults()
+    try:
+        results = getResults()
 
-    forsøk = []
-    antall = []
+        forsøk = [int(result["svar"]) for result in results]  
+        antall = [int(result["antall"]) for result in results]
 
-    for result in results:
-        forsøk.append(result["svar"])
-        antall.append(result["antall"])
+        y_min = 0
+        y_max = 20
+        plt.bar(forsøk, antall, color='red')
 
-    # Lag enkel stolpediagram
-    plt.bar(forsøk, antall, color='red')
-    plt.xlabel("Antall Forsøk")
-    plt.ylabel("Antall Spillere")
-    plt.title("Antall forsøk brukt av spillere")
-    plt.show()
+        plt.ylim(y_min, y_max)
 
+        # Legg til tall over søylene for bedre lesbarhet
+        for i, v in enumerate(antall):
+            plt.text(forsøk[i], v + 1, str(v), ha='center', va='bottom', fontsize=10)
 
-"""
-# verdier = linje.strip().split(":")   # .strip fjærner whitespaces / linjeskift.  split(";") viser at man splitter tallene ved tegnet ;
-forsøk.append((verdier[0]))
-antall.append(float(verdier[1])) 
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
 
-plt.barh(forsøk, folk, zorder = 2)
-plt.xlim(0, 100)
-plt.xticks(rotation = 50, fontsize = 12)
-plt.yticks(rotation = 30, fontsize = 8)
-plt.grid(zorder = 0)
-plt.show()
-"""
+        # x aksen tilpasses etter forsøk
+        plt.xticks(forsøk)
+
+        plt.xlabel("Antall gjetninger")
+        plt.ylabel("Antall ganger greid")
+        plt.title("Hvor mange forsøk bruker spillerne?")
+
+        plt.show()
+
+    except Exception as e:
+        print(f"Feil i plot_results: {e}")

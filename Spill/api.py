@@ -19,5 +19,4 @@ def postResult(result):
 
 
 # Testing:
-# getResults()
-# postResult(3)
+postResult(10)
