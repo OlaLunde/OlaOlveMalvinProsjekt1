@@ -213,6 +213,7 @@ class Mastermindgame:
         # Legg gjetningen til i historikken
         self.add_in_history(self.guess, correct_placement, correct_colour)
 
+
         # Vinn eller taper melding
         if correct_placement == 4:
             self.result_label.config(text="Gratulerer! Du gjettet koden riktig!")
