@@ -9,7 +9,7 @@ def plot_results():
         antall = [int(result["antall"]) for result in results]
 
         y_min = 0
-        y_max = 20
+        y_max = 30
         plt.bar(forsøk, antall, color='red')
 
         plt.ylim(y_min, y_max)
