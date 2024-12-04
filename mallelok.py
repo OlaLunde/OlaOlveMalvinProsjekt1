@@ -28,6 +28,7 @@ number_attempts = 10
 
 class Mastermindgame:
     def __init__(self, root):
+        self.resultat = None
 
         self.player_name_frame = tk.Frame(root)
         self.player_name_frame.pack(pady=10)
@@ -171,22 +172,85 @@ class Mastermindgame:
 
         # Hent highscore ved oppstart
         self.update_highscores() 
+    
+    def post_highscore(self, score):
+        try:
+            data = {"id": GameID, "hs": score, "player": self.player_name}
+            print("Sender data til serveren:", data)  # For debugging
+            self.resultat = req.post(URL, json=data)  # Send POST-forespørsel
+
+            if self.resultat.status_code == 200:
+                print("Highscore sendt!")
+                print("Respons:", self.resultat.text)
+            
+            # Hvis serveren svarer "Updated", hent oppdatert highscore
+                if self.resultat.text.strip() == '"Updated"':
+                    print("Oppdatering bekreftet. Henter ny highscore...")
+                    self.hent_highscore()
+            else:
+                print("Feil ved sending av highscore. Status:", self.resultat.status_code)
+                print("Respons:", self.resultat.text)
+        except Exception as e:
+            print("Feil ved sending av highscore:", e)
+    def hent_highscore(self):
+        try:
+            response = req.get(URL, params={"id": GameID})
+            if response.status_code == 200:
+                print("Highscore hentet fra serveren!")
+                self.resultat = response  # Lagre responsen for behandling i `update_highscores`
+                self.update_highscores()
+            else:
+                print("Feil ved henting av highscore. Status:", response.status_code)
+        except Exception as e:
+            print("Feil ved henting av highscore:", e)
+
+
+
 
     def update_highscores(self):
         try:
-            resultat = req.get(URL + "?id=" + GameID)
-            if resultat.status_code == 200:
-                highscores = resultat.json().get("highscores", [])
-                # Rens tidligere highscore-liste
-                for widget in self.hs_list.winfo_children():
-                    widget.destroy()
-                # Vis topp 5
-                for i, entry in enumerate(highscores[:5]):
-                    hs_label = tk.Label(self.hs_list, text=f"{i+1}. {entry['player']} - {entry['hs']} poeng", font=("Helvetica", 10))
-                    hs_label.pack(anchor="w")
+            if not self.resultat:  # Sjekk om `self.resultat` er None
+                print("Ingen data fra serveren ennå. Ingen highscore å oppdatere.")
+                return
+
+            print("Serverrespons tekst:", self.resultat.text)
+            print("Serverrespons statuskode:", self.resultat.status_code)
+
+        # Forsøk å tolke JSON manuelt
+            import json
+            try:
+                data = self.resultat.json()  # Håndter JSON-data
+            except ValueError:
+                print("Feil: Kunne ikke parse JSON. Forsøker manuell parsing...")
+                data = json.loads(self.resultat.text)
+
+        # Sjekk om dataen inneholder highscore-liste
+            if "highscores" in data:
+                highscores = data["highscores"]
+            elif "player" in data and "hs" in data:
+            # Hvis kun én spiller returneres
+                highscores = [{"player": data["player"], "hs": data["hs"]}]
+            else:
+                print("Ingen highscore-data tilgjengelig.")
+                return
+
+        # Rens tidligere highscore-liste
+            for widget in self.hs_list.winfo_children():
+                widget.destroy()
+
+        # Vis topp 5 eller tilgjengelig data
+            for i, entry in enumerate(highscores[:5]):
+                hs_label = tk.Label(self.hs_list, text=f"{i+1}. {entry['player']} - {entry['hs']} poeng")
+                hs_label.pack(anchor="w")
+
+        except ValueError as e:
+            print("Klarte ikke å tolke JSON fra serveren:", e)
+            if self.resultat:
+                print("Rådata:", self.resultat.text)
         except Exception as e:
             print("Feil ved oppdatering av highscore:", e)
 
+    
     def add_colour(self, colour):
         if len(self.guess) < 4:
             self.guess.append(colour)
@@ -239,6 +303,7 @@ class Mastermindgame:
         if correct_placement == 4:
             self.result_label.config(text=f"Gratulerer, {self.player_name}! Du gjettet riktig!")
             self.check_button.config(state=tk.DISABLED)
+            self.post_highscore(self.guess_count)
         else:
             self.guess_count += 1
             if self.guess_count >= number_attempts:
@@ -329,18 +394,9 @@ class Mastermindgame:
             self.result_label.config(text=f"Lykke til, {self.player_name}!")
             self.name_entry.config(state=tk.DISABLED)
             self.start_button.config(state=tk.DISABLED)
-    
-    def post_highscore(self, score):
-        try:
-            data = {"id": GameID, "hs": score, "player": self.player_name}
-            resultat = req.post(URL, json=data)
-            if resultat.status_code == 200:
-                print("Highscore sendt!")
-                self.update_highscores()
-            else:
-                print("Feil ved sending av highscore.")
-        except Exception as e:
-            print("Feil ved sending av highscore:", e)
+            self.update_highscores()
+
+
 
 
 # Start spillet

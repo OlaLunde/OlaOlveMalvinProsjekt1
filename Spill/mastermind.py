@@ -1,6 +1,8 @@
 import tkinter as tk
 import random
 import platform
+from api import postResult
+import matplotlib.pyplot as plt
 
 isMac = False
 
@@ -192,14 +194,16 @@ class Mastermindgame:
         if correct_placement == 4:
             self.result_label.config(text="Gratulerer! Du gjettet koden riktig!")
             self.check_button.config(state=tk.DISABLED)
+            postResult(self.guess_count)
 
         else:
             self.guess_count += 1
             if self.guess_count >= number_attempts:
                 self.result_label.config(
-                    text=f"Beklager, du har brukt opp alle forsøkene. Koden var: {secret_code}"
-                )
+                    text=f"Beklager, du har brukt opp alle forsøkene. Koden var: {secret_code}")
                 self.check_button.config(state=tk.DISABLED)
+                postResult("ikke fullført")
+                
 
             else:
                 # Nullstill for ny gjetning
@@ -270,7 +274,7 @@ class Mastermindgame:
         self.result_label.config(text="")
 
         # reaktiverer sjekk gjetning knapp
-        self.check_button.config(state=tk.NORMAL)
+        self.check_button.config(state=tk.NORMAL) 
 
 
 root = tk.Tk()
