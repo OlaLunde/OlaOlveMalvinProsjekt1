@@ -1,15 +1,23 @@
-from pprint import pprint
 import matplotlib.pyplot as plt
-from Spill import api
-forsøk = []
-antall = []
+from api import getResults
 
-for result in results:
-    print(result)
-    forsøk.append(result["svar"])
-    antall.append(result["antall"])
-    
-print(forsøk, antall)
+def plot_results():
+    # Hent data fra API
+    results = getResults()
+
+    forsøk = []
+    antall = []
+
+    for result in results:
+        forsøk.append(result["svar"])
+        antall.append(result["antall"])
+
+    # Lag enkel stolpediagram
+    plt.bar(forsøk, antall, color='red')
+    plt.xlabel("Antall Forsøk")
+    plt.ylabel("Antall Spillere")
+    plt.title("Antall forsøk brukt av spillere")
+    plt.show()
 
 
 """
@@ -23,3 +31,4 @@ plt.xticks(rotation = 50, fontsize = 12)
 plt.yticks(rotation = 30, fontsize = 8)
 plt.grid(zorder = 0)
 plt.show()
+"""
