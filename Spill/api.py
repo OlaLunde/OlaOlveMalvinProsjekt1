@@ -17,5 +17,4 @@ def postResult(result):
 
 
 # Testing:
-postResult(10)
->>>>>>> cbb6ffb785245dd949a3aebe39c47fc83702e03c
+postResult()
