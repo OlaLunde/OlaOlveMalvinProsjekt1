@@ -1,9 +1,12 @@
 import tkinter as tk
 import random
 import platform
-from api import postResult
-import matplotlib.pyplot as plt
+from api import postResult, getResults
+import matplotlib.pyplot as plt 
 from plot import plot_results 
+import tkinter.simpledialog
+import requests as req
+
 
 isMac = False
 
@@ -33,6 +36,20 @@ class Mastermindgame:
     
         self.guess = []
         self.chosen_colour_button = []  
+    
+        self.highscore_frame = tk.Frame(root)
+        self.highscore_frame.pack(side=tk.TOP, anchor="ne", padx=10, pady=10)
+
+        self.highscore_label = tk.Label(
+            self.highscore_frame,
+            text="Highscore: Laster...",
+            font=("Helvetica", 12, "bold"),
+            fg="black"
+        )
+        self.highscore_label.pack()
+
+        self.fetch_highscore()
+
         
         # Lager en tk ramme som skal inneholde tidligere gjetninger
         self.hist_frame = tk.Frame(root)
@@ -169,6 +186,23 @@ class Mastermindgame:
         )
         self.play_again_button.pack(side=tk.LEFT, padx=5, pady=1)
 
+        
+    def fetch_highscore(self):
+        try:
+            data = getResults()  # Bruk API-funksjonen getResults
+            if data:
+                best_score = min(data, key=lambda x: x['svar'] if isinstance(x['svar'], int) else float('inf'))
+                if isinstance(best_score['svar'], int):
+                    self.highscore_label.config(
+                        text=f"Highscore: {best_score['navn']} med {best_score['svar']} forsøk")
+                else:
+                    self.highscore_label.config(text="Highscore: Ingen fullførte spill ennå")
+            else:
+                self.highscore_label.config(text="Highscore: Ingen data tilgjengelig")
+        except Exception as e:
+            self.highscore_label.config(text="Highscore: Kunne ikke hente data")
+            print("Feil ved henting av highscore:", e)
+
 
     def add_colour(self, colour):
         if len(self.guess) < 4:
@@ -217,7 +251,15 @@ class Mastermindgame:
         if correct_placement == 4:
             self.result_label.config(text="Gratulerer! Du gjettet koden riktig!")
             self.check_button.config(state=tk.DISABLED)
-            postResult(self.guess_count)
+            
+            # Be brukeren om navn og send til API
+            player_name = tk.simpledialog.askstring("Fullført", "Skriv inn navnet ditt for highscore:")
+            if player_name:
+                postResult({"navn": player_name, "svar": self.guess_count})
+            
+            # Oppdater highscore
+            self.fetch_highscore()
+
 
         else:
             self.guess_count += 1
@@ -298,6 +340,7 @@ class Mastermindgame:
 
         # reaktiverer sjekk gjetning knapp
         self.check_button.config(state=tk.NORMAL) 
+
 
 
 root = tk.Tk()
